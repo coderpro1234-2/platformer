@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Platformer</title>
+  </head>
+  <body>
+    <center>
+      <canvas id="myCanvas" width="310" height="310"></canvas>
+    </center>
+  </body>
+  <script type="text/javascript">
+    let canvas = document.getElementById('myCanvas');
+    let ctx = canvas.getContext('2d');
+    let pl1x = 0
+    let pl1y = 0
+    let plx = 150
+    let ply = 150
+    let e = ""
+    draw_player()
+    function draw_player() {
+      canvas.width = canvas.width
+      canvas.height = canvas.height
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#000000'
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#ffffff'
+      ctx.fillRect(plx, ply, 10, 10);
+      ctx.stroke()
+    }
+    function move_player(e) {
+      if (e == "w" || e == "ArrowUp") {
+        if (ground == 'yes') {
+          pl1y = -2
+          ground = 'no'
+        }
+      }
+      if (e == "a" || e == "ArrowLeft") {
+        pl1x -= 5
+      }
+      if (e == "d" || e == "ArrowRight") {
+        pl1x += 5
+      }
+    }
+    function move() {
+      pl1y += 0.03
+      pl1x = pl1x * 0.8
+      plx += pl1x
+      if (plx > canvas.width-10) {
+        if (ground == 'no') {
+          pl1y = -2
+          pl1x = -5
+        }
+        else {
+          plx = canvas.width-10
+          pl1x = 0
+        }
+      }
+      if (plx < 0) {
+        if (ground == 'no') {
+          pl1y = -2
+          pl1x = 5
+        }
+        else {
+          plx = 0
+          pl1x = 0
+        }
+      }
+      ply += pl1y
+      if (ply > canvas.height-10) {
+        ply = canvas.height-10
+        pl1y = 0
+        ground = 'yes'
+      }
+      if (ply < 0) {
+        ply = 0
+        pl1y = 0
+      }
+      draw_player()
+    }
+    window.addEventListener("keydown", function(e) {
+      move_player(e.key)
+    })
+    setInterval(function(e){
+      move()
+    }, 1)
+  </script>
+</html>
